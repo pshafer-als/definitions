@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="nxdlformat.xsl" ?>
+<!--
+# NeXus - Neutron and X-ray Common Data Format
+# 
+# Copyright (C) 2008-2022 NeXus International Advisory Committee (NIAC)
+# 
+# This library is free software; you can redistribute it and/or
+# modify it under the terms of the GNU Lesser General Public
+# License as published by the Free Software Foundation; either
+# version 3 of the License, or (at your option) any later version.
+#
+# This library is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Lesser General Public License for more details.
+#
+# You should have received a copy of the GNU Lesser General Public
+# License along with this library; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+#
+# For further information, see http://www.nexusformat.org
+-->
+<definition name="NXamplifier" extends="NXobject" type="group"
+    category="base"
+    xmlns="http://definition.nexusformat.org/nxdl/3.1"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://definition.nexusformat.org/nxdl/3.1 ../nxdl.xsd "
+    >
+  <symbols>
+      <doc>
+      The symbol(s) listed here can be used below to coordinate datasets with the same shape.
+      </doc>
+    <symbol name="nP">
+      <doc>Number of scan points (only present in scanning measurements)</doc>
+    </symbol>
+  </symbols>
+  <doc>
+    An amplifier (or effective chain of amplifiers) with an input signal,
+    an output signal, and a proportional gain that links them.
+    (output_signal = input_signal * gain)
+  </doc>
+	<field name="name" minOccurs="0" maxOccurs="1">
+		<doc>Name of amplifier</doc>
+	    <attribute name="short_name">
+	        <doc>Abbreviated name for the amplifier, perhaps an acronym</doc>
+	    </attribute>
+	</field>
+  <attribute name="signal" type="NX_CHAR" optional="false">
+    <doc>Data is stored in either "gain" or "inverse_gain"</doc>
+    <enumeration>
+      <item value="gain" />
+      <item value="inverse_gain" />
+    </enumeration>
+  </attribute>
+  <field name="gain" type="NX_NUMBER" minOccurs="0" maxOccurs="1">
+    <doc>
+      Amplifier input was scaled by this value during data aquistion; example, 10^9 V/A.
+      output_signal = input_signal * amplifier_gain
+    </doc>
+    <dimensions rank="1">
+      <dim index="1" value="nP" required="false" />
+    </dimensions>
+    <attribute name="units" type="NX_CHAR" optional="false"/>
+  </field>
+  <field name="inverse_gain" type="NX_NUMBER" minOccurs="0" maxOccurs="1">
+    <doc>
+      Amplifier input was downscaled by this value during data aquistion; example 2 pA/V.
+      output_signal = input_signal / amplifier_inverse_gain
+    </doc>
+    <dimensions rank="1">
+      <dim index="1" value="nP" required="false" />
+    </dimensions>
+    <attribute name="units" type="NX_CHAR" optional="false"/>
+  </field>
+  <attribute name="data_units" type="NX_CHAR" optional="true">
+    <doc>
+      Data of an optional parent object is stored in units of 
+      either the "input" or "output" of the amplifier.
+    </doc>
+    <enumeration>
+      <item value="input" />
+      <item value="output" />
+    </enumeration>
+  </attribute>
+  <field name="input_max" type="NX_NUMBER" minOccurs="0" maxOccurs="1">
+    <doc>Saturation value for amplifier input signal</doc>
+    <attribute name="units" type="NX_CHAR" optional="false"/>
+  </field>
+  <field name="output_max" type="NX_NUMBER" minOccurs="0" maxOccurs="1">
+    <doc>Saturation value for amplifier output signal</doc>
+    <attribute name="units" type="NX_CHAR" optional="false"/>
+  </field>
+</definition>
